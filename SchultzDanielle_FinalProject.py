@@ -7,8 +7,8 @@ manage supply inventory.
 
 from breezypythongui import EasyFrame
 import openpyxl
-# import os
 import pandas as pd
+from fpDataGrab import *
 
 class mainWindow(EasyFrame):
     '''Starting window for application'''
@@ -17,18 +17,30 @@ class mainWindow(EasyFrame):
         '''Set up window and widgets'''
         EasyFrame.__init__(self, title = "Home Screen")
 
-        # Button for adding adoptable reptiles
-        self.addButton(text = "Adoptable Reptiles", row = 0, column = 0)
+        # Button  and field for viewing adoptable reptiles
+        self.addButton(text = "View Reptiles", row = 0, column = 0,
+                       command = self.showReptiles)
+        self.repOut = self.addTextArea("", row = 1, column = 0,
+                                           columnspan = 4,
+                                           width = 50, height = 5)
 
-        # Button for viewing inventory
-        self.addButton(text = "View Inventory", row = 1, column = 0)
+        # Button and field for viewing inventory
+        self.addButton(text = "View Inventory", row = 2, column = 0,
+                       command = self.showInventory)
+        self.invOut = self.addTextArea("", row = 3, column = 0,
+                                           columnspan = 4,
+                                           width = 50, height = 5)
 
     # Event handler methods for buttons
     def showReptiles(self):
         '''Outputs list of available reptiles'''
-        reptileList = ""
-        self.messageBox(title = "Reptiles", message = reptileList
-        
+        reptileList = listData('Reptiles')
+        self.repOut.setText(reptileList)
+
+    def showInventory(self):
+        '''Outputs list of available inventory'''
+        inventoryList = listData('Inventory')
+        self.invOut.setText(inventoryList)
 
 # Instantiate and create window
 def main():
@@ -37,6 +49,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-'''
-https://medium.com/analytics-vidhya/how-to-extract-information-from-your-excel-sheet-using-python-5f4f518aec49
-'''
